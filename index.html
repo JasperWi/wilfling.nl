@@ -3,33 +3,58 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Note-Style Gallery</title>
+<title>Wifling</title>
 <style>
-  body {
-    margin: 0;
-    background-color: black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
+body {
+  margin: 0;
+  background-color: rgb(28, 28, 28);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
-  .gallery {
-    position: relative;
-    display: flex;
-    gap: 20px;
-  }
+.gallery {
+  position: relative; /* Reference point for absolute positioning */
+  width: 0; /* Keep center point tight */
+  height: 0;
+}
 
-  .tile {
-    overflow: hidden;
-    cursor: pointer;
-  }
+.tile {
+  position: absolute; /* Each tile defines its own offset */
+  width: 100px;
+  height: 100px;
+}
 
   .tile img {
     display: block;
-    width: 100px;
-    height: 100px;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
+  }
+
+  .hover-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .hover-area svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .hover-shape {
+    fill: transparent;
+    pointer-events: all;
+    cursor: pointer;
+  }
+
+  .hover-shape:hover {
+    fill: rgba(255, 255, 255, 0.1); /* Optional: show hover area */
   }
 
   .modal {
@@ -38,7 +63,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -53,10 +78,10 @@
   }
 
   .modal-content {
-    background-color: #fffef8;
-    color: black;
+    background-color: #dedccf;
+    color: rgba(0, 0, 0, 0.716);
     padding: 20px 30px;
-    border-radius: 8px;
+    border-radius: 10px;
     max-width: 400px;
     width: 80%;
     position: relative;
@@ -64,8 +89,14 @@
     font-size: 1rem;
     line-height: 1.6em;
     background-image: 
-      linear-gradient(to right, rgba(255,0,0,0.2) 40px, transparent 40px),
-      repeating-linear-gradient(to bottom, transparent 0, transparent 1.5em, rgba(0,0,0,0.08) 1.5em, rgba(0,0,0,0.08) 1.6em);
+      linear-gradient(to right, rgba(255, 0, 0, 0.09) 15px, transparent 13px),
+    repeating-linear-gradient(
+        to bottom,
+        transparent 0.4em,                     /* start transparent offset */
+        transparent 1.9em,
+        rgba(0, 0, 0, 0.08) 1.9em,
+        rgba(0, 0, 0, 0.08) 2em
+    );
     background-size: 100% 1.6em;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
   }
@@ -74,11 +105,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 26px;
+    margin-top: -10px;
     font-size: 0.9rem;
     color: #555;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 4px;
+    border-bottom: 1px solid #cccccc00;
+    padding-bottom: 0px;
   }
 
   .close-btn {
@@ -92,32 +124,75 @@
   .close-btn:hover {
     color: #ff3333;
   }
+
+  .copyright {
+    position: fixed;
+    bottom: 8px;
+    right: 12px;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: Arial, sans-serif;
+    user-select: none;
+    pointer-events: none;
+  }
 </style>
 </head>
 <body>
-<div class="gallery"></div>
-    <div class="tile" data-date="2025-08-01" data-text="hope is gained out of despair,<br>
-neglect gives value to care,<br>
-mountains are carved by valleys,<br>
-put trees along the alleys,<br>
-hugging pillows proofs it‘s true,<br>
-love‘d be shapeless without you." data-base="20250801">
-      <img src="20250801_base.png" alt="Image 1" />
-    </div>
-    <div class="tile" data-date="2025-08-02" data-text="Short text for the second image." data-base="20250802">
-      <img src="20250801_base.png" alt="Image 2" />
+<div class="gallery">
+  <div class="tile" data-date="2025-08-01" style="transform: translate(-26px, 0px);" data-text="
+            hope is gained out of despair,<br>
+            neglect gives value to care,<br>
+            mountains are carved by valleys,<br>
+            put trees along the alleys,<br>
+            hugging pillows proofs it's true,<br>
+            love'd be shapeless without you.
+    " data-base="20250801">
+    <img src="20250801_base.png" alt="Image 1" />
+    <div class="hover-area">
+      <svg>
+        <polygon points="40,18 95,0 70,40 80,60 50,100 17,70" class="hover-shape" />
+      </svg>
     </div>
   </div>
+  
+  <div class="tile" data-date="2025-06-28" style="transform: translate(26px, 0px);" data-text="
+            A fresh idea setting everything in motion <br>
+            prompting your hands to thrillingly applaud your notion <br>
+            like a mountain awakening beneath my feet <br>
+            mere seconds to decipher the rules of the game <br>
+            my every timid step attuning to your beat <br>
+            careful not to extinguish the excitement's flame <br>
+            <br>
+            now no place beyond this very moment exists <br>
+            eyes bound to the melody forming on your lips <br>
+            drips from the brush drenched in nameless hues <br>
+            create uncharted landscapes to catch my senses <br> 
+            a window's view into our undiscovered truths <br>
+            a lover's tight dance bridges all worldly fences <br>
+    " data-base="20250628">
+    <img src="20250628_base.png" alt="Image 2" />
+    <div class="hover-area">
+      <svg>
+        <polygon points="50,0 80,5 48,32 55,30 93,22 93,65 80,50 41,96 10,100 35,57 24,38" class="hover-shape" />
+      </svg>
+    </div>
+  </div>
+  </div>
+</div>
 
-  <div class="modal" id="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <span id="modal-date"></span>
-        <span class="close-btn" id="close-btn">&times;</span>
-      </div>
-      <div id="modal-text"></div>
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span id="modal-date"></span>
+      <span class="close-btn" id="close-btn">&times;</span>
     </div>
+    <div id="modal-text"></div>
   </div>
+</div>
+
+<div class="copyright">
+  &copy; 2025 J. Wilfling. All rights reserved.
+</div>
 
 <script>
   const tiles = document.querySelectorAll('.tile');
@@ -128,39 +203,69 @@ love‘d be shapeless without you." data-base="20250801">
 
   let hoverIntervals = new Map();
 
-  tiles.forEach(tile => {
-    const img = tile.querySelector('img');
+  function setupTile(tile) {
     const baseName = tile.dataset.base;
+    const img = tile.querySelector('img');
+    const hoverShape = tile.querySelector('.hover-shape');
+    let frame = 1;
 
-    tile.addEventListener('mouseenter', () => {
-      let frame = 1;
+    function startHoverAnimation() {
+      if (hoverIntervals.has(tile)) return;
+      
+      // For demo purposes, we'll just add a class instead of changing images
+      tile.classList.add('hovering');
+      
       hoverIntervals.set(tile, setInterval(() => {
         img.src = `${baseName}_${frame}.png`;
         frame = frame === 1 ? 2 : 1;
-      }, 500));
-    });
+      }, 400));
+    }
 
-    tile.addEventListener('mouseleave', () => {
+    function stopHoverAnimation() {
+      tile.classList.remove('hovering');
+      
+      if (!hoverIntervals.has(tile)) return;
+      
       clearInterval(hoverIntervals.get(tile));
+      hoverIntervals.delete(tile);
       img.src = `${baseName}_base.png`;
-    });
+      frame = 1;
+    }
 
-    tile.addEventListener('click', () => {
+    hoverShape.addEventListener('mouseenter', startHoverAnimation);
+    hoverShape.addEventListener('mouseleave', stopHoverAnimation);
+    
+    hoverShape.addEventListener('click', () => {
       modalDate.textContent = tile.dataset.date;
       modalText.innerHTML = tile.dataset.text;
       modal.classList.add('active');
     });
-  });
+  }
+
+  // Initialize tiles
+  tiles.forEach(setupTile);
 
   closeBtn.addEventListener('click', () => {
     modal.classList.remove('active');
   });
-
+  
   modal.addEventListener('click', e => {
     if (e.target === modal) {
       modal.classList.remove('active');
     }
   });
 </script>
+
+<style>
+  /* Add visual feedback for hover state */
+  .tile.hovering img {
+    transform: scale(1.09);
+    transition: transform 0.0s ease;
+  }
+  
+  .tile img {
+    transition: transform 0.0s ease;
+  }
+</style>
 </body>
 </html>
