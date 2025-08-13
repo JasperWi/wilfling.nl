@@ -1,10 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Website Test</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Note-Style Gallery</title>
+<style>
+  body {
+    margin: 0;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .gallery {
+    position: relative;
+    display: flex;
+    gap: 20px;
+  }
+
+  .tile {
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .tile img {
+    display: block;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+  }
+
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .modal.active {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .modal-content {
+    background-color: #fffef8;
+    color: black;
+    padding: 20px 30px;
+    border-radius: 8px;
+    max-width: 400px;
+    width: 80%;
+    position: relative;
+    font-family: 'Georgia', serif;
+    font-size: 1rem;
+    line-height: 1.6em;
+    background-image: 
+      linear-gradient(to right, rgba(255,0,0,0.2) 40px, transparent 40px),
+      repeating-linear-gradient(to bottom, transparent 0, transparent 1.5em, rgba(0,0,0,0.08) 1.5em, rgba(0,0,0,0.08) 1.6em);
+    background-size: 100% 1.6em;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    color: #555;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 4px;
+  }
+
+  .close-btn {
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #333;
+    padding-left: 10px;
+  }
+
+  .close-btn:hover {
+    color: #ff3333;
+  }
+</style>
 </head>
 <body>
-    <h1>Website is Reachable 2</h1>
+<div class="gallery"></div>
+    <div class="tile" data-date="2025-08-01" data-text="hope is gained out of despair,<br>
+neglect gives value to care,<br>
+mountains are carved by valleys,<br>
+put trees along the alleys,<br>
+hugging pillows proofs it‘s true,<br>
+love‘d be shapeless without you." data-base="20250801">
+      <img src="20250801_base.png" alt="Image 1" />
+    </div>
+    <div class="tile" data-date="2025-08-02" data-text="Short text for the second image." data-base="20250802">
+      <img src="20250801_base.png" alt="Image 2" />
+    </div>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span id="modal-date"></span>
+        <span class="close-btn" id="close-btn">&times;</span>
+      </div>
+      <div id="modal-text"></div>
+    </div>
+  </div>
+
+<script>
+  const tiles = document.querySelectorAll('.tile');
+  const modal = document.getElementById('modal');
+  const modalDate = document.getElementById('modal-date');
+  const modalText = document.getElementById('modal-text');
+  const closeBtn = document.getElementById('close-btn');
+
+  let hoverIntervals = new Map();
+
+  tiles.forEach(tile => {
+    const img = tile.querySelector('img');
+    const baseName = tile.dataset.base;
+
+    tile.addEventListener('mouseenter', () => {
+      let frame = 1;
+      hoverIntervals.set(tile, setInterval(() => {
+        img.src = `${baseName}_${frame}.png`;
+        frame = frame === 1 ? 2 : 1;
+      }, 500));
+    });
+
+    tile.addEventListener('mouseleave', () => {
+      clearInterval(hoverIntervals.get(tile));
+      img.src = `${baseName}_base.png`;
+    });
+
+    tile.addEventListener('click', () => {
+      modalDate.textContent = tile.dataset.date;
+      modalText.innerHTML = tile.dataset.text;
+      modal.classList.add('active');
+    });
+  });
+
+  closeBtn.addEventListener('click', () => {
+    modal.classList.remove('active');
+  });
+
+  modal.addEventListener('click', e => {
+    if (e.target === modal) {
+      modal.classList.remove('active');
+    }
+  });
+</script>
 </body>
 </html>
